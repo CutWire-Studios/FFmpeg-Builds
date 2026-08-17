@@ -1,3 +1,35 @@
+# CutWire FFmpeg 7.1 builds
+
+Fork of [BtbN/FFmpeg-Builds](https://github.com/BtbN/FFmpeg-Builds) used by
+[Drift](https://github.com/CutWire-Studios/Drift) to pin **one** FFmpeg version:
+**7.1, gpl-shared**, for **linux64** and **win64**.
+
+This is not a daily autobuild mirror. BtbN dropped n7.1 from their moving
+`latest` tag on 2026-08-17 (they now ship n8.1 / n9.0 / master). Drift still
+needs 7.1 because Qt 6.10.3’s QtMultimedia ffmpeg backend is FFmpeg 7.1.3 —
+Drift and Qt both load libav\* in-process, so the soversion has to match.
+
+GitHub Actions is disabled on this fork. Rebuild locally if the pin ever needs
+refreshing:
+
+```bash
+./makeimage.sh linux64 gpl-shared 7.1
+./build.sh     linux64 gpl-shared 7.1
+
+./makeimage.sh win64 gpl-shared 7.1
+./build.sh     win64 gpl-shared 7.1
+```
+
+Artifacts land in `artifacts/`. Publish them as the `n7.1` release.
+
+The current `n7.1` release is the last BtbN n7.1 gpl-shared autobuild
+(`n7.1.5-16-g9a4bb2c579`, `autobuild-2026-08-16-13-00`), renamed to stable
+filenames. Checksums are in `checksums.sha256` on that release.
+
+---
+
+Original BtbN documentation follows.
+
 # FFmpeg Static Auto-Builds
 
 Static Windows (x86_64) and Linux (x86_64) Builds of ffmpeg master and latest release branch.
@@ -6,18 +38,6 @@ Windows builds are targetting Windows 7 and newer, provided UCRT is installed.
 The minimum supported version is Windows 10 22H2, no guarantees on anything older.
 
 Linux builds are targetting RHEL/CentOS 8 (glibc-2.28 + linux-4.18) and anything more recent.
-
-## Auto-Builds
-
-Builds run daily at 12:00 UTC (or GitHubs idea of that time) and are automatically released on success.
-
-**Auto-Builds run ONLY for win(arm)64 and linux(arm)64. There are no win32/x86 auto-builds, though you can produce win32 builds yourself following the instructions below.**
-
-### Release Retention Policy
-
-- The last build of each month is kept for two years.
-- The last 14 daily builds are kept.
-- The special "latest" build floats and provides consistent URLs always pointing to the latest build.
 
 ## Package List
 
