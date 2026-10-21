@@ -13,7 +13,6 @@ ffbuild_enabled() {
     [[ $ADDINS_STR == *5.0* && $TARGET == win* ]] && return -1
     [[ $ADDINS_STR == *5.1* && $TARGET == win* ]] && return -1
     [[ $ADDINS_STR == *6.0* && $TARGET == win* ]] && return -1
-    [[ $TARGET == linuxarm64 ]] && return -1
     return 0
 }
 
@@ -35,12 +34,14 @@ ffbuild_dockerbuild() {
         -Denable_docs=false
     )
 
-    if [[ $TARGET == linux64 ]]; then
+    if [[ $TARGET == linux64 || $TARGET == linuxarm64 ]]; then
+        local triplet=x86_64-linux-gnu
+        [[ $TARGET == linuxarm64 ]] && triplet=aarch64-linux-gnu
         myconf+=(
             --cross-file=/cross.meson
             --default-library=shared
             --sysconfdir="/etc"
-            -Ddriverdir="/usr/lib/x86_64-linux-gnu/dri"
+            -Ddriverdir="/usr/lib/$triplet/dri"
             -Ddisable_drm=false
             -Dwith_x11=yes
             -Dwith_glx=no
